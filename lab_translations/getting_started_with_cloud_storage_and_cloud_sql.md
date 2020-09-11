@@ -101,3 +101,23 @@ In this lab, you will learn how to perform the following tasks:
 
 
 6. Task 6: Configure an application in a Compute Engine instance to use a Cloud Storage object
+	- List all objects in the bucket using the following command:
+		`gsutil ls gs://$DEVSHELL_PROJECT_ID`
+
+	- Retrieve the object details using the below command and get the public accessable url from it:
+		`gsutil ls -l gs://$DEVSHELL_PROJECT_ID/my-excellent-blog.png`
+	- Return to your ssh session on your bloghost VM instance
+	- Enter this command to set your working directory to the document root of the web server
+		`cd /var/www/html`
+	- Use the nano text editor to edit index.php
+		`sudo nano index.php`
+	- Use the arrow keys to move the cursor to the line that contains the h1 element. Press Enter to open up a new, blank screen line, and then paste the URL you copied earlier into the line
+	- Paste this HTML markup immediately before the URL
+		`<img src='`
+	- Place a closing single quotation mark and a closing angle bracket at the end of the URL
+		`'>`
+	- Press `Ctrl+O`, and then press `Enter` to save your edited file
+	- Press `Ctrl+X` to exit the nano text editor
+	- Restart the web server
+		`sudo service apache2 restart`
+	- An image should now be loaded as well when the app is accessed from a browser.
