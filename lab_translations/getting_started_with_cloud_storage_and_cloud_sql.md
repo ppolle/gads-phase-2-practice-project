@@ -18,6 +18,10 @@ In this lab, you will learn how to perform the following tasks:
 		`gcloud config set project PROJECT_ID`
 
 2. Task 2: Deploy a web server VM instance
+	- Create a VM instance named bloghost with a default machine type, Debian GNU/Linux 9 (stretch) bootdisk and a custom startup script using the following commands
+	`gcloud compute instances create bloghost --zone=us-central1-a --machine-type=e2-medium --subnet=default  --metadata=startup-script=apt-get\ update$'\n'apt-get\ install\ apache2\ php\ php-mysql\ -y$'\n'service\ apache2\ restart --tags=http-server --image=debian-9-stretch-v20200910 --image-project=debian-cloud`
+	
+	`gcloud compute  firewall-rules create default-allow-http --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:80 --source-ranges=0.0.0.0/0 --target-tags=http-server`
 
 3. Task 3: Create a Cloud Storage bucket using the gsutil command line
 	- Create a location environmetn variable with you prefered location, which in this case is the US.
