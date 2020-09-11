@@ -19,6 +19,7 @@ In this lab, you will learn how to perform the following tasks:
 
 2. Task 2: Deploy a web server VM instance
 	- Create a VM instance named bloghost with a default machine type, Debian GNU/Linux 9 (stretch) bootdisk and a custom startup script using the following commands
+
 	`gcloud compute instances create bloghost --zone=us-central1-a --machine-type=e2-medium --subnet=default  --metadata=startup-script=apt-get\ update$'\n'apt-get\ install\ apache2\ php\ php-mysql\ -y$'\n'service\ apache2\ restart --tags=http-server --image=debian-9-stretch-v20200910 --image-project=debian-cloud`
 	
 	`gcloud compute  firewall-rules create default-allow-http --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:80 --source-ranges=0.0.0.0/0 --target-tags=http-server`
@@ -41,6 +42,14 @@ In this lab, you will learn how to perform the following tasks:
 
 
 4. Task 4: Create the Cloud SQL instance
+	- Create and SQl instance called blog-db, with password as 12345 and us-central-1a zone and Mysql version 5.7 using the follwoing command
+		`gcloud sql instances create blog-db --password="12345" --sql-version=MYSQL_5_7" --zone=us-central1-a`
+
+	- Use the following command to create a add a user
+		`gcloud sql users create blogdbuser --instance=blog-db -i blog-db --host='%' --password='12345'`
+
+	- Add web front end network using the follwoing command:
+		`gcloud compute instances list gcloud sql instances patch blog-db --authorized-networks="35.192.208.2/32"`
 
 5. Task 5: Configure an application in a Compute Engine instance to use Cloud SQL
 	- ssh into your bloghost VM with the follwoing command
