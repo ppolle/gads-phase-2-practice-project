@@ -1,12 +1,13 @@
-# LAB: Google Cloud Fundamentals: Getting Started with Compute Engine
+# LAB: Google Cloud Fundamentals: Getting Started with Cloud Storage and Cloud SQL
 
 ## Objectives
 
 In this lab, you will learn how to perform the following tasks:
 
-	* Create a Compute Engine virtual machine using the Google Cloud Platform (GCP) Console.
-	* Create a Compute Engine virtual machine using the gcloud command-line interface.
-	* Connect between the two instances.
+	* Create a Cloud Storage bucket and place an image into it.
+	* Create a Cloud SQL instance and configure it.
+	* Connect to the Cloud SQL instance from a web server.
+	* Use the image in the Cloud Storage bucket on a web page.
 
 
 ## Tasks
@@ -16,47 +17,24 @@ In this lab, you will learn how to perform the following tasks:
 	- Set the default project with the following command
 		`gcloud config set project PROJECT_ID`
 
-2. Task 2: Create a virtual machine using the GCP Console
-	- Create a Vm called my-vm-1 using the follwoing commands
-		`gcloud compute instances create "my-vm-1" --machine-type "n1-standard-1" --image-project "debian-cloud" --image "debian-9-stretch-v20190213" --subnet "default" --tags http`
+2. Task 2: Deploy a web server VM instance
 
-		`gcloud compute firewall-rules create allow-http --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:80 --source-ranges=0.0.0.0/0 --target-tags=http`
+3. Task 3: Create a Cloud Storage bucket using the gsutil command line
+	- Create a location environmetn variable with you prefered location, which in this case is the US.
+		`export LOCATION=US`
 
-3. Task 3: Create a virtual machine using the gcloud command line
-	- Change you default zone to us-central1-b using the following command.
-		`gcloud config set compute/zone us-central1-b`
+	- Create a bucket named after your project id.
+		`gsutil mb -l $LOCATION gs://$DEVSHELL_PROJECT_ID`
+	- Retrieve a banner image from a publicly accessible Cloud Storage location with the following command
+		`gsutil cp gs://cloud-training/gcpfci/my-excellent-blog.png my-excellent-blog.png`
+	- Copy the banner image to your newly created Cloud Storage bucket
+		`gsutil cp my-excellent-blog.png gs://$DEVSHELL_PROJECT_ID/my-excellent-blog.png`
+	- Modify the Access Control List of the object you just created so that it is readable by everyone
+		`gsutil acl ch -u allUsers:R gs://$DEVSHELL_PROJECT_ID/my-excellent-blog.png`
 
-	- Create a VM instance called my-vm-2 using the following command:
-		`gcloud compute instances create "my-vm-2" --machine-type "n1-standard-1" --image-project "debian-cloud" --image "debian-9-stretch-v20190213" --subnet "default"`
 
-4. Task 4: Connect between VM instances
-	- SSH into my-vm-2 with the follwoing command
-		`ssh my-vm-2`
+4. Task 4: Create the Cloud SQL instance
 
-	- Use the ping command to confirm that my-vm-2 can reach my-vm-1 over the network
-		`ping my-vm-1`
+5. Task 5: Configure an application in a Compute Engine instance to use Cloud SQL
 
-	- Press `CTRL+C` to abort the ping command
-
-	- SSH into my-vm-1 eith the follwing command
-		`ssh my-vm-1`
-
-	- Install Nginx web server
-		`sudo apt-get install nginx-light -y`
-
-	- Use the nano editor to add a custom message to the homepage of the web server
-		`sudo nano /var/www/html/index.nginx-debian.html`
-
-	- Use the arrow keys to move the cursor to the line just below the h1 header. Add text like this, and replace YOUR_NAME with your name
-		`Hi from YOUR_NAME`
-
-	- Press `Ctrl+O` and then press `Enter` to save your edited file, and then press `Ctrl+X` to exit the nano text editor
-
-	- Confirm that the web server is serving your new page. At the command prompt on my-vm-1, execute this command
-		`curl http://localhost/`
-
-	- To exit the command prompt on my-vm-1, execute this command
-		`exit`
-
-	- To confirm that my-vm-2 can reach the web server on my-vm-1, at the command prompt on my-vm-2, execute this command
-		`curl http://my-vm-1/`
+6. Task 6: Configure an application in a Compute Engine instance to use a Cloud Storage object
