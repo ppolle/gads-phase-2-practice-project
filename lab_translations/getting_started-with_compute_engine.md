@@ -1,6 +1,6 @@
-#LAB: Google Cloud Fundamentals: Getting Started with Compute Engine
+# LAB: Google Cloud Fundamentals: Getting Started with Compute Engine
 
-##Objectives
+## Objectives
 
 In this lab, you will learn how to perform the following tasks:
 
@@ -9,10 +9,10 @@ In this lab, you will learn how to perform the following tasks:
 	* Connect between the two instances.
 
 
-##Tasks
+## Tasks
 1. Task 1: Create a virtual machine using the GCP Console
 	- Login into google with the following command
-		gcloud auth login
+		`gcloud auth login`
 	- Set the default project with the following command
 		gcloud config set project PROJECT_ID
 
