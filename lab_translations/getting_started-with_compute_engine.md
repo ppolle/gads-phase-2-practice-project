@@ -17,6 +17,10 @@ In this lab, you will learn how to perform the following tasks:
 		gcloud config set project PROJECT_ID
 
 2. Task 2: Create a virtual machine using the GCP Console
+	- Create a Vm called my-vm-1 using the follwoing commands
+		gcloud compute instances create "my-vm-1" --machine-type "n1-standard-1" --image-project "debian-cloud" --image "debian-9-stretch-v20190213" --subnet "default" --tags http
+
+		gcloud compute firewall-rules create allow-http --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:80 --source-ranges=0.0.0.0/0 --target-tags=http
 
 3. Task 3: Create a virtual machine using the gcloud command line
 	- Change you default zone to us-central1-b using the following command.
